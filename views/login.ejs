@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login 登录界面</title>
+</head>
+
+<body>
+    用户名： <input id="username" type="text" name="username"><br>
+    密码 ： <input id="password" type="password" name="password"><br>
+    <button id="loginBtn">登录</button>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // console.log(axios);
+
+    // 拦截器
+    // Add a response interceptor
+    axios.interceptors.response.use(function (response) {
+        const { authorization } = response.headers
+        authorization && localStorage.setItem("token", authorization)
+        return response;
+    }, function (error) {
+
+        const { status } = error.response
+        if (status === 401) {
+            localStorage.removeItem("token")
+            window.location.href = "/login"
+        }
+        return Promise.reject(error);
+    });
+
+    const username = document.querySelector("#username")
+    const password = document.querySelector("#password")
+    const loginBtn = document.querySelector('#loginBtn')
+
+    loginBtn.onclick = () => {
+        axios.post('/user/login', {
+            username: username.value,
+            password: password.value,
+        }).then(res => {
+            console.log(res.data);
+            if (res.data.ok === 1) {
+                // 存储token
+                location.href = '/home'
+            } else {
+                alert('用户名密码不匹配')
+            }
+        })
+    }
+</script>
+
+</html>
