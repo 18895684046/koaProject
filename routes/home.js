@@ -1,11 +1,17 @@
 const Router = require('koa-router')
-
+const { BannerModel, ShopGoodsModel } = require('../db/mongooseModel')
 const router = new Router()
 
-router.get('/', async (ctx, next) => {
-    // ctx.cookies.get('fullname')   // 获取cookies
-    // ctx.cookies.set('loaction','sh') // 设置 cookies
-    await ctx.render("home",{username:"kerwind"}) // 自动去找 views/home.ejs  ==> 注意此处异步处理
+// 获取 轮播图数据 
+router.get('/banner', async (ctx, next) => {
+    const res = await BannerModel.find()
+    ctx.body = { data: res }
+})
+
+// 获取首页商品分类数据
+router.get('/goodstype', async (ctx, next) => {
+    const res = await ShopGoodsModel.find()
+    ctx.body = { data: res }
 })
 
 module.exports = router

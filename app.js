@@ -7,11 +7,13 @@ const path = require('path')
 const bodyParser = require('koa-bodyparser')
 const session = require('koa-session-minimal')
 const JWT = require("./utils/JWT")
-const cors  = require('koa2-cors')
-
+const cors = require('koa2-cors')
+const ModelDb = require('./db/mogooseDb')
 
 // 处理静态资源
 app.use(static(path.join(__dirname, 'public')))
+// app.use(KoaStatic(__dirname + '/public'));               //这两种写法都可以
+// app.use(KoaStatic(path.join(__dirname + '/public')))  //这两种写法都可以
 
 // 加载模板引擎
 app.use(views(path.join(__dirname, 'views'), {
@@ -21,7 +23,7 @@ app.use(views(path.join(__dirname, 'views'), {
 app.use(bodyParser())
 
 // 处理跨域和 前后端分离时的 配置，不然前端拦截器获取不到 Authorization
-app.use(cors({credentials:true,exposeHeaders:['Authorization']}))
+app.use(cors({ credentials: true, exposeHeaders: ['Authorization'] }))
 
 // session 配置
 // app.use(session({
