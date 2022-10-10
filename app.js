@@ -1,7 +1,7 @@
 const Koa = require("koa")
 const app = new Koa()
 const router = require('./routes/index')
-const static = require('koa-static')
+const KoaStatic = require('koa-static')
 const views = require('koa-views')
 const path = require('path')
 const bodyParser = require('koa-bodyparser')
@@ -9,9 +9,10 @@ const session = require('koa-session-minimal')
 const JWT = require("./utils/JWT")
 const cors = require('koa2-cors')
 const ModelDb = require('./db/mogooseDb')
+const routerResponse = require('./middleware/routerResponse')
 
 // 处理静态资源
-app.use(static(path.join(__dirname, 'public')))
+app.use(KoaStatic(path.join(__dirname, 'public')))
 // app.use(KoaStatic(__dirname + '/public'));               //这两种写法都可以
 // app.use(KoaStatic(path.join(__dirname + '/public')))  //这两种写法都可以
 
@@ -78,16 +79,12 @@ app.use(async (ctx, next) => {
     }
 })
 
+// 添加通哟处理接口返回的中间件
+app.use(routerResponse())
 
 // 应用级中间件
 app.use(router.routes()).use(router.allowedMethods())
 
-// app.use((ctx, next) => {
-//     ctx.response.body = "hello world"
-// })
-
-app.listen(3004, () => {
-    console.log("服务器运行在3004端口");
-})
+app.listen(3004,'0.0.0.0')
 
 
