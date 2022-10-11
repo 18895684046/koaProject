@@ -85,6 +85,8 @@ app.use(routerResponse())
 // 应用级中间件
 app.use(router.routes()).use(router.allowedMethods())
 
-app.listen(3004,'0.0.0.0')
+app.listen(3004,'0.0.0.0', () => {
+    console.log("服务器运行在3004端口");
+})
 
 
