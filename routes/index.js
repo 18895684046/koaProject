@@ -1,4 +1,5 @@
 const homeRouter = require('./home')
+const classifyRouter = require('./classify')
 const Router = require('koa-router')
 const router = new Router()
 
@@ -8,6 +9,7 @@ router.prefix('/api')
 
 // 先注册成路由级中间件
 router.use('/home', homeRouter.routes(), homeRouter.allowedMethods())
+router.use('/classify', classifyRouter.routes(), homeRouter.allowedMethods())
 
 // 路由重定向
 // router.redirect('/', '/home')

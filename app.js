@@ -49,7 +49,7 @@ app.use(cors({ credentials: true, exposeHeaders: ['Authorization'] }))
 //     }
 // })
 
-// token 配置
+// token 配置 
 
 app.use(async (ctx, next) => {
     //排除login相关的路由和接口

@@ -14,4 +14,4 @@ const JWT = {
     }
 }
 
-module.exports = JWT
+module.exports = JWT 
